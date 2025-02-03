@@ -1,3 +1,4 @@
+import { checkForNegative } from "../helper/error";
 import { Player } from "./Player";
 
 export class Squad { 
@@ -46,9 +47,11 @@ export class Squad {
 
 
     addFantasyPoints(points: number) {
+        checkForNegative("Fantasy Points", points);
         this.fantasyPoints += points;
     }
     addRuns(runs: number) {
+        checkForNegative("Runs", runs); 
         this.runs += runs;
     }
     setTossWinner() {

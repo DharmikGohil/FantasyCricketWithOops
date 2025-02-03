@@ -1,3 +1,5 @@
+import { checkForNegative } from "../helper/error";
+
 export class Player {
   constructor(
     private name: string,
@@ -54,21 +56,25 @@ export class Player {
     this.isViceCaptain = isViceCaptain;
   }
   setRuns(runs: number) {
+    checkForNegative("Runs", runs);
     this.runs = runs;
   }
   setFantasyPoints(fantasyPoints: number) {
+    checkForNegative("Fantasy Points", fantasyPoints);
     this.fantasyPoints = fantasyPoints;
   }
   setIsPlayed(isPlayed: boolean) {
     this.isPlayed = isPlayed;
   }
   setBallsPlayed(ballsPlayed: number) {
+    checkForNegative("Balls Played", ballsPlayed);
     this.ballsPlayed = ballsPlayed;
   }
   setOutBy(outBy: string) {
     this.outBy = outBy;
   }
   setTakenWickets(takenWickets: number) {
+    checkForNegative("Taken Wickets", takenWickets);
     this.takenWickets = takenWickets;
   }
 }
