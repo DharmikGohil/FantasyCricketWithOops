@@ -50,4 +50,13 @@ describe("After adding players", () => {
         squad.addRuns(10);
         expect(squad.getRuns()).toBe(10);
     })
+
+    // // checking for negative values
+    test("squad should throw error if negative fantasy points added", () => {
+        expect(() => squad.addFantasyPoints(-10)).toThrowError("Fantasy Points cannot be negative");
+    })
+
+    test("squad should throw error if negative runs added", () => {
+        expect(() => squad.addRuns(-10)).toThrowError("Runs cannot be negative");
+    })
 })
