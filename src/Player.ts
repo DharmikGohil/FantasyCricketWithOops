@@ -7,12 +7,12 @@ export class Player {
     private credit: number,
     private isCaptain: boolean = false,
     private isViceCaptain: boolean = false,
-    private runs: number,
-    private fantasyPoints: number,
+    private runs: number  = 0,
+    private fantasyPoints: number = 0,
     private isPlayed: boolean = false,
-    private ballsPlayed: number,
+    private ballsPlayed: number  = 0,
     private outBy: string,
-    private takenWickets: number
+    private takenWickets: number = 0
   ) {}
 
   getName() {
@@ -55,16 +55,16 @@ export class Player {
   setViceCaptain(isViceCaptain: boolean) {
     this.isViceCaptain = isViceCaptain;
   }
-  setRuns(runs: number) {
+  addRuns(runs: number) {
     checkForNegative("Runs", runs);
     this.runs = runs;
   }
-  setFantasyPoints(fantasyPoints: number) {
+  addFantasyPoints(fantasyPoints: number) {
     checkForNegative("Fantasy Points", fantasyPoints);
     this.fantasyPoints = fantasyPoints;
   }
-  setIsPlayed(isPlayed: boolean) {
-    this.isPlayed = isPlayed;
+  setIsPlayed() {
+    this.isPlayed = true;
   }
   setBallsPlayed(ballsPlayed: number) {
     checkForNegative("Balls Played", ballsPlayed);
@@ -73,8 +73,7 @@ export class Player {
   setOutBy(outBy: string) {
     this.outBy = outBy;
   }
-  setTakenWickets(takenWickets: number) {
-    checkForNegative("Taken Wickets", takenWickets);
-    this.takenWickets = takenWickets;
+  increaseTakenWicket() {
+    this.takenWickets += 1;
   }
 }

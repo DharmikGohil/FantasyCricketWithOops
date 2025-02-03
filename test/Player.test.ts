@@ -22,10 +22,12 @@ describe('Tests for player class', () => {
 
   test("2. Testing setter methods of player's properties", () => {
     player.setCaptain(true);
-    player.setFantasyPoints(10);
-    player.setIsPlayed(true);
-    player.setRuns(102);
-    player.setTakenWickets(3);
+    player.addFantasyPoints(10);
+    player.setIsPlayed();
+    player.addRuns(102);
+    player.increaseTakenWicket();
+    player.increaseTakenWicket();
+    player.increaseTakenWicket();
     player.setBallsPlayed(11);
     player.setViceCaptain(true);
 
@@ -36,5 +38,18 @@ describe('Tests for player class', () => {
     expect(player.getTakenWickets()).toBe(3);
     expect(player.getBallsPlayed()).toBe(11);
     expect(player.getIsViceCaptain()).toBe(true);
+  })
+
+  // test for negative values
+  test("3. should throw error if negative fantasy points added", () => {
+    expect(() => player.addFantasyPoints(-10)).toThrowError("Fantasy Points cannot be negative");
+  })
+
+  test("4. should throw error if negative runs added", () => {
+    expect(() => player.addRuns(-10)).toThrowError("Runs cannot be negative");
+  })
+
+  test("5. should throw error if negative balls played added", () => {
+    expect(() => player.setBallsPlayed(-10)).toThrowError("Balls Played cannot be negative");
   })
 });
