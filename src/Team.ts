@@ -64,6 +64,14 @@ export class Team {
         this.isTossWinner = true;
     }
     addPlayer(player: Player) { 
+ 
+        this.validatePlayer(player)
+        this.team.push(player);
+        this.decreaseCredits(player.getCredit());
+        this.increaseRoleCount(player.getRole());
+    }
+    
+    private validatePlayer(player : Player){
         if(this.team.includes(player)) {
             throw new Error('Player already added');
         }
@@ -82,31 +90,23 @@ export class Team {
         if(player.getRole() === "Wicketkeeper" && this.wicketKeeperCount >= TEAM_RULES.MAX_WICKETKEEPER) {
             throw new Error('Maximum Wicketkeeper limit reached');
         }
-
-        this.team.push(player);
-        this.decreaseCredits(player.getCredit());
-
-        if(player.getRole() === "Batsman") {
-            this.increaseBatsmanCount();
-        }
-        else if(player.getRole() === "Bowler") {
-            this.increaseBowlerCount();
-        }
-        else if(player.getRole() === "Wicketkeeper") {
-            this.increaseWicketKeeperCount();
-        }
     }
 
     private decreaseCredits(credit: number) {
         this.credits -= credit;
     }
-    private increaseBatsmanCount() {
-        this.batsmanCount += 1;
-    }
-    private increaseBowlerCount(){
-        this.bowlerCount += 1;
-    }
-    private increaseWicketKeeperCount() {
-        this.wicketKeeperCount += 1;
-    }
+
+    private increaseRoleCount(role: string) {
+        switch(role) {
+            case "Batsman": 
+                this.batsmanCount += 1;
+                break;
+            case "Bowler":
+                this.bowlerCount += 1;
+                break;
+            case "Wicketkeeper":
+                this.wicketKeeperCount += 1;
+                break;
+        }
+    } 
 } 
