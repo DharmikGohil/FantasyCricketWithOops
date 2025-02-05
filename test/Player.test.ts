@@ -21,7 +21,7 @@ describe('Tests for player class', () => {
   });
 
   test("2. Testing setter methods of player's properties", () => {
-    player.setCaptain(true);
+    player.setCaptain();
     player.addFantasyPoints(10);
     player.setIsPlayed();
     player.addRuns(102);
@@ -29,7 +29,7 @@ describe('Tests for player class', () => {
     player.increaseTakenWicket();
     player.increaseTakenWicket();
     player.setBallsPlayed(11);
-    player.setViceCaptain(true);
+    player.setViceCaptain();
 
     expect(player.getIsCaptain()).toBe(true);
     expect(player.getFantasyPoints()).toBe(10);
