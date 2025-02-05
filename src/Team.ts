@@ -8,7 +8,7 @@ const TEAM_RULES = {
     TOTAL_CREDITS: 100,
 }
 export class Team { 
-    private team : Player[];
+    private players : Player[];
     private name : string;
     private fantasyPoints : number = 0;
     private runs : number = 0;
@@ -20,11 +20,11 @@ export class Team {
     
     constructor(name: string) {
         this.name = name;
-        this.team = [];
+        this.players = [];
     }
     
     getTeam() {
-        return this.team;
+        return this.players;
     }
     getName(){
         return this.name;
@@ -50,6 +50,13 @@ export class Team {
     getWicketKeeperCount() {
         return this.wicketKeeperCount;
     }
+    getNextBatsman() {
+        return this.players.find(player => player.getRole() === "Batsman" && !player.getIsPlayed());
+    }
+    getNextBowler() {
+        return this.players.find(player => player.getRole() === "Bowler" && !player.getIsPlayed());
+    }
+
 
 
     addFantasyPoints(points: number) {
@@ -60,22 +67,25 @@ export class Team {
         checkForNegative("Runs", runs); 
         this.runs += runs;
     }
+    addWicket(player : Player) {
+        player.setIsPlayed(); 
+    }
     setTossWinner() {
         this.isTossWinner = true;
     }
     addPlayer(player: Player) { 
  
         this.validatePlayer(player)
-        this.team.push(player);
+        this.players.push(player);
         this.decreaseCredits(player.getCredit());
         this.increaseRoleCount(player.getRole());
     }
     
     private validatePlayer(player : Player){
-        if(this.team.includes(player)) {
+        if(this.players.includes(player)) {
             throw new Error('Player already added');
         }
-        if (this.team.length >= TEAM_RULES.MAX_PLAYERS) {
+        if (this.players.length >= TEAM_RULES.MAX_PLAYERS) {
             throw new Error('Maximum team size reached');
         } 
         if (this.credits - player.getCredit() < 0) {

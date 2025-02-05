@@ -134,3 +134,18 @@ describe("Testing team rules", () => {
             expect(() => team?.addPlayer(createBowler("Costly Bowler", 12))).toThrowError("Not enough credits");   
         })
 })
+describe("getting next player who hasn'r played", () => {
+
+    test("team should return next batsman for batting", () => {
+        const team = new Team("RCB"); 
+        const batsmen = Array.from({length : 5}, (_, i) => createBatsman(`Batsman ${i}`, 10));
+        batsmen.forEach(batsman => team.addPlayer(batsman));
+        expect(team.getNextBatsman()).toBe(batsmen[0]);
+    })
+    test("team should return next bowler for bowling", () => {
+        const team = new Team("RCB"); 
+        const bowlers = Array.from({length : 5}, (_, i) => createBowler(`Bowler ${i}`, 10));
+        bowlers.forEach(bowler => team.addPlayer(bowler));
+        expect(team.getNextBowler()).toBe(bowlers[0]);
+    })
+})
