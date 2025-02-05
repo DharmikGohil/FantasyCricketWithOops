@@ -14,6 +14,7 @@ export class Team {
     private runs : number = 0;
     private isTossWinner : boolean = false;
     private credits : number = TEAM_RULES.TOTAL_CREDITS;
+    private fallenWickets : number = 0;
     private batsmanCount : number = 0;
     private bowlerCount : number = 0;
     private wicketKeeperCount : number = 0;
@@ -51,7 +52,18 @@ export class Team {
         return this.wicketKeeperCount;
     }
     getNextBatsman() {
-        return this.players.find(player => player.getRole() === "Batsman" && !player.getIsPlayed());
+        return this.players.find(player => {
+            if(this.fallenWickets < 5 && player.getRole() === "Batsman" && !player.getIsPlayed()){
+                return true;
+            }
+            else if(this.fallenWickets >= 5 && this.fallenWickets < 10 && player.getRole() === "Bowler" && !player.getIsPlayed()){
+                return true;
+            }
+            else if(this.fallenWickets === 10 && player.getRole() === "Wicketkeeper" && !player.getIsPlayed()){
+                return true;
+            }
+            return false;
+        });
     }
     getNextBowler() {
         return this.players.find(player => player.getRole() === "Bowler" && !player.getIsPlayed());
@@ -60,15 +72,15 @@ export class Team {
 
 
     addFantasyPoints(points: number) {
-        checkForNegative("Fantasy Points", points);
+        // checkForNegative("Fantasy Points", points);
         this.fantasyPoints += points;
     }
     addRuns(runs: number) {
         checkForNegative("Runs", runs); 
         this.runs += runs;
     }
-    addWicket(player : Player) {
-        player.setIsPlayed(); 
+    increaseFallenWickets(){
+        this.fallenWickets += 1;
     }
     setTossWinner() {
         this.isTossWinner = true;

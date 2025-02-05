@@ -49,19 +49,19 @@ export class Player {
     return this.takenWickets;
   }
   
-  setCaptain(isCaptain: boolean) {
-    this.isCaptain = isCaptain;
+  setCaptain() {
+    this.isCaptain = true;
   }
-  setViceCaptain(isViceCaptain: boolean) {
-    this.isViceCaptain = isViceCaptain;
+  setViceCaptain() {
+    this.isViceCaptain = true;
   }
   addRuns(runs: number) {
     checkForNegative("Runs", runs);
-    this.runs = runs;
+    this.runs += runs;
   }
   addFantasyPoints(fantasyPoints: number) {
-    checkForNegative("Fantasy Points", fantasyPoints);
-    this.fantasyPoints = fantasyPoints;
+    // checkForNegative("Fantasy Points", fantasyPoints);
+    this.fantasyPoints += fantasyPoints;
   }
   setIsPlayed() {
     this.isPlayed = true;
@@ -72,6 +72,9 @@ export class Player {
   }
   setOutBy(outBy: string) {
     this.outBy = outBy;
+  }
+  increaseBallsPlayed() {
+    this.ballsPlayed += 1;
   }
   increaseTakenWicket() {
     this.takenWickets += 1;
