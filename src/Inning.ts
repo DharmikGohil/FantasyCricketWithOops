@@ -6,9 +6,10 @@ import { Shot } from "./Shot";
 
 export class Inning{
     private readonly TOTAL_OVER_BALLS = 30;
+    private ballOutcomeProcessor : BallOutcomeProcessor;
 
     constructor(private battingTeam: ITeam, private bowlingTeam: ITeam) {
-        
+        this.ballOutcomeProcessor = new BallOutcomeProcessor();
     }
     getBattingTeam(){
         return this.battingTeam;
@@ -21,12 +22,21 @@ export class Inning{
         let batsman = this.battingTeam.getNextBatsman();
         let bowler = this.bowlingTeam.getNextBowler();
 
-        while(currentBallCount <= this.TOTAL_OVER_BALLS && batsman){
+        while(currentBallCount <= this.TOTAL_OVER_BALLS && batsman && bowler){
             const shot = new Shot();
             const runs = shot.getRuns();
-            const fantPoints = shot.getFantasyPoints();
+            const fantasyPoints = shot.getFantasyPoints();
 
-            const isOut = this
+            if(runs === 0){ // dotball
+                this.ballOutcomeProcessor.processDotBall(bowler, this.bowlingTeam, fantasyPoints);
+            }
+            else if(runs === -1){ // wicket
+                this.ballOutcomeProcessor.processWicket(batsman, bowler, this.battingTeam, this.bowlingTeam, fantasyPoints);
+                batsman = this.battingTeam.getNextBatsman();
+            }
+            else{
+                this.ballOutcomeProcessor.processNormalBall(runs, fantasyPoints, batsman, bowler, this.battingTeam, this.bowlingTeam);
+            }
 
             currentBallCount++;
             batsman?.increaseBallsPlayed();
@@ -34,22 +44,6 @@ export class Inning{
                 bowler = this.bowlingTeam.getNextBowler();
                 bowler?.setIsPlayed();
             }
-        }
-    }
-
-    private processDelivery(runs : number, fantasyPoints : number, batman : IPlayer, bowler : IPlayer) : void{
-        const ballOutcomeProcessor = new BallOutcomeProcessor();
-        const pointsCalculator =  new PointsCalculator();
-        if(runs === 0){
-            let points = pointsCalculator.calculatePoints(fantasyPoints, bowler);
-            ballOutcomeProcessor.processDotBall(bowler, this.bowlingTeam, points);
-        }
-        else if(runs === -1){
-            let points = pointsCalculator.calculatePoints(fantasyPoints, bowler);
-            ballOutcomeProcessor.processWicket(batman, bowler, this.battingTeam, this.bowlingTeam, fantasyPoints);
-        }
-        else{
-            ballOutcomeProcessor.processNormalBall(batman, bowler, this.battingTeam, this.bowlingTeam, fa)
         }
     }
 }

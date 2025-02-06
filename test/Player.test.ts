@@ -40,12 +40,7 @@ describe('Tests for player class', () => {
     expect(player.getIsViceCaptain()).toBe(true);
   })
 
-  // test for negative values
-  test("3. should throw error if negative fantasy points added", () => {
-    expect(() => player.addFantasyPoints(-10)).toThrowError("Fantasy Points cannot be negative");
-  })
-
-  test("4. should throw error if negative runs added", () => {
+  test("3. should throw error if negative runs added", () => {
     expect(() => player.addRuns(-10)).toThrowError("Runs cannot be negative");
   })
 

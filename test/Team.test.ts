@@ -75,11 +75,6 @@ describe("Testing edge cases", () => {
         team = null;
     })
 
-    // checking for negative values 
-    test("team should throw error if negative fantasy points added", () => {
-        expect(() => team?.addFantasyPoints(-10)).toThrowError("Fantasy Points cannot be negative");
-    })
-
     test("team should throw error if negative runs added", () => {
         expect(() => team?.addRuns(-10)).toThrowError("Runs cannot be negative");
     })

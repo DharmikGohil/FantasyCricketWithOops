@@ -16,25 +16,25 @@ describe('Test for PointsCalculator class', () => {
 
   describe('test for player points', () => {
     test('it should retunr 2x points if player if captain', () => {
-      expect(pointsCalculator.calculatePoints(5, captainPlayer)).toBe(10);
+      expect(pointsCalculator.calculatePoints(captainPlayer, 5)).toBe(10);
     });
     test('should be return 1.5x points if players is vicecaptain', () => {
-      expect(pointsCalculator.calculatePoints(3, viceCaptainPlayer)).toBe(4.5);
+      expect(pointsCalculator.calculatePoints(viceCaptainPlayer, 3)).toBe(4.5);
     });
     test('it should be return normal points if players is neither captain or viceCaptain', () => {
-      expect(pointsCalculator.calculatePoints(2, normalPlayer)).toBe(2);
+      expect(pointsCalculator.calculatePoints(normalPlayer, 2)).toBe(2);
     });
   });
 
   describe('testing duck panelty for batsman', () => {
     test('it should return -4 if batsman is captain', () => {
-      expect(pointsCalculator.calculateDuckPanelty(captainPlayer)).toBe(-4); 
+      expect(pointsCalculator.calculateDuckPaneltyPoints(captainPlayer)).toBe(4); 
     });
     test('it should return -3 if batsman is viceCaptain', () => {
-        expect(pointsCalculator.calculateDuckPanelty(viceCaptainPlayer)).toBe(-3); 
+        expect(pointsCalculator.calculateDuckPaneltyPoints(viceCaptainPlayer)).toBe(3); 
     });
     test('it should return -2 if batsman is normal player', () => {
-        expect(pointsCalculator.calculateDuckPanelty(normalPlayer)).toBe(-2); 
+        expect(pointsCalculator.calculateDuckPaneltyPoints(normalPlayer)).toBe(2);  
     });
   });
 });
