@@ -1,9 +1,10 @@
+import { ITeam } from "../helper/TeamInterface";
 import { Inning } from "../src/Inning";
 import { Team } from "../src/Team";
 
 describe("Inning", () => { 
-    let team1: Team;
-    let team2: Team;
+    let team1: ITeam;
+    let team2: ITeam;
     let inning: Inning;
     beforeEach(() => {
         team1 = new Team("Batting Team");
@@ -19,5 +20,8 @@ describe("Inning", () => {
     })
     test("should return bowling team", () => {
         expect(inning.getBowlingTeam()).toBe(team2);
+    })
+    test("should be have play method", () => {
+        expect(typeof inning.play).toBe("function");
     })
 }) 

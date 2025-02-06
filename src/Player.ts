@@ -1,6 +1,7 @@
 import { checkForNegative } from "../helper/error";
+import { IPlayer } from "../helper/PlayerInterface";
 
-export class Player {
+export class Player implements IPlayer {
   constructor(
     private name: string,
     private role: string,
@@ -15,68 +16,68 @@ export class Player {
     private takenWickets: number = 0
   ) {}
 
-  getName() {
+  getName() : string {
     return this.name;
   }
-  getRole() {
+  getRole() : string {
     return this.role;
   }
-  getCredit() {
+  getCredit() : number {
     return this.credit;
   }
-  getIsCaptain() {
+  getIsCaptain() : boolean {
     return this.isCaptain;
   }
-  getIsViceCaptain() {
+  getIsViceCaptain() : boolean {
     return this.isViceCaptain;
   }
-  getRuns() {
+  getRuns() : number {
     return this.runs;
   }
-  getFantasyPoints() {
+  getFantasyPoints() : number {
     return this.fantasyPoints;
   }
-  getIsPlayed() {
+  getIsPlayed() : boolean {
     return this.isPlayed;
   }
-  getBallsPlayed() {
+  getBallsPlayed() : number {
     return this.ballsPlayed;
   }
-  getOutBy() {
+  getOutBy() : string {
     return this.outBy;
   }
-  getTakenWickets() {
+  getTakenWickets() : number{
     return this.takenWickets;
   }
   
-  setCaptain() {
+  setCaptain() : void{
     this.isCaptain = true;
   }
-  setViceCaptain() {
+  setViceCaptain() : void {
     this.isViceCaptain = true;
   }
-  addRuns(runs: number) {
+  addRuns(runs: number) : void {
     checkForNegative("Runs", runs);
     this.runs += runs;
   }
-  addFantasyPoints(fantasyPoints: number) {
+  addFantasyPoints(fantasyPoints: number) : void {
     // checkForNegative("Fantasy Points", fantasyPoints);
     this.fantasyPoints += fantasyPoints;
   }
-  setIsPlayed() {
+  setIsPlayed() : void {
     this.isPlayed = true;
   }
-  setBallsPlayed(ballsPlayed: number) {
+  setBallsPlayed(ballsPlayed: number) : void {
     checkForNegative("Balls Played", ballsPlayed);
     this.ballsPlayed = ballsPlayed;
   }
-  setOutBy(outBy: string) {
+  setOutBy(outBy: string) : void{
     this.outBy = outBy;
   }
-  increaseBallsPlayed() {
+  increaseBallsPlayed() : void {
     this.ballsPlayed += 1;
   }
-  increaseTakenWicket() {
+  increaseTakenWicket() : void {
     this.takenWickets += 1;
   }
 }

@@ -8,11 +8,11 @@ describe("Testing Shot class", () => {
     test("Testing Shot constructor", () => {
         expect(shot).not.toBeNull();
     })
-    test("Testing getRuns method", () => {
+    test("it shuold be return random runs", () => {
         expect(shot.getRuns()).toBeGreaterThanOrEqual(-1);
         expect(shot.getRuns()).toBeLessThanOrEqual(6);
     }) 
-    test("Testing getFantasyPoints method", () => {
+    test("it should be return fantasy points as per rule", () => {
         expect(shot.getFantasyPoints()).toBeGreaterThanOrEqual(1);
         expect(shot.getFantasyPoints()).toBeLessThanOrEqual(10);
     }) 

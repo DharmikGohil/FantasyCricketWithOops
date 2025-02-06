@@ -1,9 +1,15 @@
+import { IPlayer } from "../helper/PlayerInterface";
+import { ITeam } from "../helper/TeamInterface";
+import { BallOutcomeProcessor } from "./BallOutcomeProcessor";
+import { PointsCalculator } from "./PointsCalculator";
 import { Shot } from "./Shot";
-import { Team } from "./Team";
 
 export class Inning{
+    private readonly TOTAL_OVER_BALLS = 30;
 
-    constructor(private battingTeam: Team, private bowlingTeam: Team) {}
+    constructor(private battingTeam: ITeam, private bowlingTeam: ITeam) {
+        
+    }
     getBattingTeam(){
         return this.battingTeam;
     }
@@ -15,47 +21,35 @@ export class Inning{
         let batsman = this.battingTeam.getNextBatsman();
         let bowler = this.bowlingTeam.getNextBowler();
 
-        while(currentBallCount <= 30){
+        while(currentBallCount <= this.TOTAL_OVER_BALLS && batsman){
             const shot = new Shot();
             const runs = shot.getRuns();
             const fantPoints = shot.getFantasyPoints();
-            const batsmanFantPoints = batsman?.getIsCaptain() ? fantPoints * 2 : batsman?.getIsViceCaptain() ? fantPoints * 1.5 : fantPoints;
-            const bowlerFantPoints = bowler?.getIsCaptain() ? fantPoints * 2 : bowler?.getIsViceCaptain() ? fantPoints * 1.5 : fantPoints;
-    
 
-            if(runs === 0){ // dot ball
-                this.bowlingTeam.addFantasyPoints(bowlerFantPoints);
-                bowler?.addFantasyPoints(bowlerFantPoints);
-            }
-            else if(runs === -1){ // wicket
-                this.bowlingTeam.addFantasyPoints(bowlerFantPoints);
-                bowler?.addFantasyPoints(bowlerFantPoints);
-                bowler?.increaseTakenWicket();
-                if(batsman?.getRuns() === 0){
-                    const penaltyPoints = batsman.getIsCaptain() ? -4 : batsman.getIsViceCaptain() ? -3 : -2;
-                    this.battingTeam.addFantasyPoints(penaltyPoints);
-                    batsman.addFantasyPoints(penaltyPoints);
-                }
-                batsman?.setIsPlayed();
-                batsman?.setOutBy(bowler?.getName()!);
-                this.battingTeam.increaseFallenWickets();
-                batsman = this.battingTeam.getNextBatsman();
-            }
-            else{
-                this.battingTeam.addRuns(runs);
-                this.battingTeam.addFantasyPoints(batsmanFantPoints);
-                batsman?.addRuns(runs);
-                batsman?.addFantasyPoints(batsmanFantPoints);
-                
-                this.bowlingTeam.addFantasyPoints(bowlerFantPoints);
-                bowler?.addFantasyPoints(runs);
-            }
+            const isOut = this
+
             currentBallCount++;
             batsman?.increaseBallsPlayed();
             if(currentBallCount % 6 == 0){
                 bowler = this.bowlingTeam.getNextBowler();
                 bowler?.setIsPlayed();
             }
+        }
+    }
+
+    private processDelivery(runs : number, fantasyPoints : number, batman : IPlayer, bowler : IPlayer) : void{
+        const ballOutcomeProcessor = new BallOutcomeProcessor();
+        const pointsCalculator =  new PointsCalculator();
+        if(runs === 0){
+            let points = pointsCalculator.calculatePoints(fantasyPoints, bowler);
+            ballOutcomeProcessor.processDotBall(bowler, this.bowlingTeam, points);
+        }
+        else if(runs === -1){
+            let points = pointsCalculator.calculatePoints(fantasyPoints, bowler);
+            ballOutcomeProcessor.processWicket(batman, bowler, this.battingTeam, this.bowlingTeam, fantasyPoints);
+        }
+        else{
+            ballOutcomeProcessor.processNormalBall(batman, bowler, this.battingTeam, this.bowlingTeam, fa)
         }
     }
 }

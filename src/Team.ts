@@ -1,5 +1,7 @@
 import { checkForNegative } from "../helper/error";
-import { Player } from "./Player";
+import { IPlayer } from "../helper/PlayerInterface";
+import { ITeam } from "../helper/TeamInterface";
+
 const TEAM_RULES = {
     MAX_BATSMAN: 5,
     MAX_BOWLER: 5,
@@ -7,51 +9,52 @@ const TEAM_RULES = {
     MAX_PLAYERS: 11,
     TOTAL_CREDITS: 100,
 }
-export class Team { 
-    private players : Player[];
-    private name : string;
-    private fantasyPoints : number = 0;
-    private runs : number = 0;
-    private isTossWinner : boolean = false;
-    private credits : number = TEAM_RULES.TOTAL_CREDITS;
-    private fallenWickets : number = 0;
-    private batsmanCount : number = 0;
-    private bowlerCount : number = 0;
-    private wicketKeeperCount : number = 0;
+
+export class Team implements ITeam { 
+    private players: IPlayer[];
+    private name: string;
+    private fantasyPoints: number = 0;
+    private runs: number = 0;
+    private isTossWinner: boolean = false;
+    private credits: number = TEAM_RULES.TOTAL_CREDITS;
+    private fallenWickets: number = 0;
+    private batsmanCount: number = 0;
+    private bowlerCount: number = 0;
+    private wicketKeeperCount: number = 0;
     
     constructor(name: string) {
         this.name = name;
         this.players = [];
     }
     
-    getTeam() {
+    getTeam(): IPlayer[] {
         return this.players;
     }
-    getName(){
+    getName(): string {
         return this.name;
     }
-    getFantasyPoints() {
+    getFantasyPoints(): number {
         return this.fantasyPoints;
     }
-    getRuns() {
+    getRuns(): number {
         return this.runs;
     }
-    isTossWon() {
+    isTossWon(): boolean {
         return this.isTossWinner;
     }
-    getCredits() {
+    getCredits(): number {
         return this.credits;
     }
-    getBatsmanCount() {
+    getBatsmanCount(): number {
         return this.batsmanCount;
     }
-    getBowlerCount() {
+    getBowlerCount(): number {
         return this.bowlerCount;
     }
-    getWicketKeeperCount() {
+    getWicketKeeperCount(): number {
         return this.wicketKeeperCount;
     }
-    getNextBatsman() {
+    getNextBatsman(): IPlayer | undefined {
         return this.players.find(player => {
             if(this.fallenWickets < 5 && player.getRole() === "Batsman" && !player.getIsPlayed()){
                 return true;
@@ -65,35 +68,32 @@ export class Team {
             return false;
         });
     }
-    getNextBowler() {
+    getNextBowler(): IPlayer | undefined {
         return this.players.find(player => player.getRole() === "Bowler" && !player.getIsPlayed());
     }
 
-
-
-    addFantasyPoints(points: number) {
+    addFantasyPoints(points: number): void {
         // checkForNegative("Fantasy Points", points);
         this.fantasyPoints += points;
     }
-    addRuns(runs: number) {
+    addRuns(runs: number): void {
         checkForNegative("Runs", runs); 
         this.runs += runs;
     }
-    increaseFallenWickets(){
+    increaseFallenWickets(): void {
         this.fallenWickets += 1;
     }
-    setTossWinner() {
+    setTossWinner(): void {
         this.isTossWinner = true;
     }
-    addPlayer(player: Player) { 
- 
-        this.validatePlayer(player)
+    addPlayer(player: IPlayer) { 
+        this.validatePlayer(player);
         this.players.push(player);
         this.decreaseCredits(player.getCredit());
         this.increaseRoleCount(player.getRole());
     }
     
-    private validatePlayer(player : Player){
+    private validatePlayer(player: IPlayer) {
         if(this.players.includes(player)) {
             throw new Error('Player already added');
         }
@@ -131,4 +131,4 @@ export class Team {
                 break;
         }
     } 
-} 
+}
