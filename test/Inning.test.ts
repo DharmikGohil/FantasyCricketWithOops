@@ -1,27 +1,54 @@
+import { IBallOutcomeProcessor } from "../helper/BallOutcomeProcessorInterface";
+import { IPlayer } from "../helper/PlayerInterface";
 import { ITeam } from "../helper/TeamInterface";
 import { Inning } from "../src/Inning";
-import { Team } from "../src/Team";
+import { createMockPlayer, createMockTeam, createMockBallOutcomeProcessor } from "./mocks/mockObjects";
 
-describe("Inning", () => { 
-    let team1: ITeam;
-    let team2: ITeam;
+describe("Inning", () => {
     let inning: Inning;
-    beforeEach(() => {
-        team1 = new Team("Batting Team");
-        team2 = new Team("Bowling Team");
-        inning = new Inning(team1, team2);
-    })
+    let mockBallOutcomeProcessor: jest.Mocked<IBallOutcomeProcessor>;
+    let mockBattingTeam: jest.Mocked<ITeam>
+    let mockBowlingTeam: jest.Mocked<ITeam>;
+    let mockBatsman: jest.Mocked<IPlayer>
+    let mockBowler: jest.Mocked<IPlayer>;
 
-    test("should create a new inning", () => { 
-        expect(inning).toBeInstanceOf(Inning);
-    })
-    test("should return batting team", () => {
-        expect(inning.getBattingTeam()).toBe(team1);
-    })
-    test("should return bowling team", () => {
-        expect(inning.getBowlingTeam()).toBe(team2);
-    })
-    test("should be have play method", () => {
-        expect(typeof inning.play).toBe("function");
-    })
-}) 
+    beforeEach(() => {
+        jest.clearAllMocks();
+
+        mockBallOutcomeProcessor = createMockBallOutcomeProcessor();
+        mockBattingTeam = createMockTeam();
+        mockBowlingTeam = createMockTeam();
+        mockBatsman = createMockPlayer();
+        mockBowler = createMockPlayer();
+
+        mockBattingTeam.getNextBatsman.mockReturnValue(mockBatsman);
+        mockBowlingTeam.getNextBowler.mockReturnValue(mockBowler);
+
+        inning = new Inning(mockBattingTeam, mockBowlingTeam, mockBallOutcomeProcessor);
+    });
+
+    test("should process dot ball correctly", () => {
+        inning.play();
+        expect(mockBallOutcomeProcessor.processDotBall).toHaveBeenCalled();
+    });
+
+    test("should process normal ball correctly", () => {
+        inning.play();
+        expect(mockBallOutcomeProcessor.processNormalBall).toHaveBeenCalled();
+    });
+
+    test("should process wicket correctly", () => {
+        inning.play();
+        expect(mockBallOutcomeProcessor.processWicket).toHaveBeenCalled();
+    });
+
+    test("should call increaseBallsPlayed on batsman", () => {
+        inning.play();
+        expect(mockBatsman.increaseBallsPlayed).toHaveBeenCalled();
+    });
+
+    test("should change bowler after every 6 balls", () => {
+        inning.play();
+        expect(mockBowlingTeam.getNextBowler).toHaveBeenCalledTimes(5); 
+    });
+});

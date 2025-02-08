@@ -1,81 +1,68 @@
 import { ScoreManager } from "../src/ScoreManager";
-import { PointsCalculator } from "../src/PointsCalculator";
 import { IPlayer } from "../helper/PlayerInterface";
 import { ITeam } from "../helper/TeamInterface";
+import { IPointsCalculator } from "../helper/PointsCalculatorInterface";
+import { createMockPlayer, createMockPointsCalculator, createMockTeam } from "./mocks/mockObjects";
 
 jest.mock("../src/PointsCalculator");
 
 describe("ScoreManager", () => {
     let scoreManager: ScoreManager;
-    let batsman: jest.Mocked<IPlayer>;
-    let bowler: jest.Mocked<IPlayer>;
-    let battingTeam: jest.Mocked<ITeam>;
-    let bowlingTeam: jest.Mocked<ITeam>;
-    let pointsCalculator: jest.Mocked<PointsCalculator>;
+    let mockBatsman : jest.Mocked<IPlayer>;
+    let mockBowler : jest.Mocked<IPlayer>;
+    let mockBattingTeam : jest.Mocked<ITeam>;
+    let mockBowlingTeam : jest.Mocked<ITeam>;
+    let mockPointsCalculator: jest.Mocked<IPointsCalculator>; 
 
     beforeEach(() => {
-        // Create ScoreManager instance
-        scoreManager = new ScoreManager();
+        jest.clearAllMocks(); // for seperate test we clear all before calls
+        // mocking needed objects 
+        mockBatsman = createMockPlayer();
+        mockBowler = createMockPlayer();
+        mockBattingTeam = createMockTeam();
+        mockBowlingTeam = createMockTeam();
+        
+        mockPointsCalculator = createMockPointsCalculator();
+        scoreManager = new ScoreManager(mockPointsCalculator);
+        
 
-        // Create mock player objects
-        batsman = {
-            addRuns: jest.fn(),
-            addFantasyPoints: jest.fn(),
-            getRuns: jest.fn().mockReturnValue(0),
-            getIsCaptain: jest.fn().mockReturnValue(false),
-            getIsViceCaptain: jest.fn().mockReturnValue(false)
-        } as unknown as jest.Mocked<IPlayer>;
-
-        bowler = {
-            addFantasyPoints: jest.fn(),
-        } as unknown as jest.Mocked<IPlayer>;
-
-        // Create mock team objects
-        battingTeam = {
-            addRuns: jest.fn(),
-            addFantasyPoints: jest.fn()
-        } as unknown as jest.Mocked<ITeam>;
-
-        bowlingTeam = {
-            addFantasyPoints: jest.fn()
-        } as unknown as jest.Mocked<ITeam>;
-
-        // Mock PointsCalculator
-        pointsCalculator = new PointsCalculator() as jest.Mocked<PointsCalculator>;
-        pointsCalculator.calculatePoints.mockReturnValue(10);
-        pointsCalculator.calculateDuckPaneltyPoints.mockReturnValue(2);
-
-        // Replace ScoreManager's PointsCalculator instance with our mock
-        (scoreManager as any).pointsCalculator = pointsCalculator;
     });
 
     test("should add runs to batsman and batting team", () => {
-        scoreManager.addRuns(4, batsman, battingTeam);
+        scoreManager.addRuns(4, mockBatsman, mockBattingTeam);
 
-        expect(batsman.addRuns).toHaveBeenCalledWith(4);
-        expect(battingTeam.addRuns).toHaveBeenCalledWith(4);
+        expect(mockBatsman.addRuns).toHaveBeenCalledWith(4);
+        expect(mockBattingTeam.addRuns).toHaveBeenCalledWith(4);
     });
 
-    test("should correctly add fantasy points for batsman", () => {
-        scoreManager.addBatsmanFantasyPoints(5, batsman, battingTeam);
+    test("should correctly add 2x fantasy points for captain batsman", () => {
+        mockBatsman.getIsCaptain.mockReturnValue(true);
+        mockPointsCalculator.calculatePoints.mockReturnValue(20);
 
-        expect(pointsCalculator.calculatePoints).toHaveBeenCalledWith(batsman, 5);
-        expect(batsman.addFantasyPoints).toHaveBeenCalledWith(10);
-        expect(battingTeam.addFantasyPoints).toHaveBeenCalledWith(10);
+        scoreManager.addBatsmanFantasyPoints(10, mockBatsman, mockBattingTeam);
+
+        expect(mockPointsCalculator.calculatePoints).toHaveBeenCalledWith(mockBatsman, 10);
+        expect(mockBatsman.addFantasyPoints).toHaveBeenCalledWith(20);
+        expect(mockBattingTeam.addFantasyPoints).toHaveBeenCalledWith(20);
     });
 
-    test("should correctly add fantasy points for bowler", () => {
-        scoreManager.addBowlerFantasyPoints(6, bowler, bowlingTeam);
+    test("should correctly add 1.5x fantasy points for viceCaptain bowler", () => {
+        mockBowler.getIsViceCaptain.mockReturnValue(true);
+        mockPointsCalculator.calculatePoints.mockReturnValue(15);
 
-        expect(pointsCalculator.calculatePoints).toHaveBeenCalledWith(bowler, 6);
-        expect(bowler.addFantasyPoints).toHaveBeenCalledWith(10);
-        expect(bowlingTeam.addFantasyPoints).toHaveBeenCalledWith(10);
+        scoreManager.addBowlerFantasyPoints(10, mockBowler, mockBowlingTeam);
+
+        expect(mockPointsCalculator.calculatePoints).toHaveBeenCalledWith(mockBowler, 10);
+        expect(mockBowler.addFantasyPoints).toHaveBeenCalledWith(15);
+        expect(mockBowlingTeam.addFantasyPoints).toHaveBeenCalledWith(15);
     });
+    
+    test("should correcty add duck panelty points when batsman out with 0 runs", () => {
 
-    test("should apply duck penalty correctly", () => {
-        scoreManager.handleDuckPenalty(batsman);
-
-        expect(pointsCalculator.calculateDuckPaneltyPoints).toHaveBeenCalledWith(batsman);
-        expect(batsman.addFantasyPoints).toHaveBeenCalledWith(-2);
-    });
-});
+        mockPointsCalculator.calculateDuckPaneltyPoints.mockReturnValue(2);
+        
+        scoreManager.handleDuckPenalty(mockBatsman, mockBattingTeam);
+        expect(mockBatsman.addFantasyPoints).toHaveBeenCalledWith(-2);
+    })
+});  
+ 

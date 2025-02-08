@@ -1,19 +1,54 @@
-import { Team } from "../src/Team";
-import { Match } from "../src/Match";
-import { createTeams } from "../src/createTeams";
+import { IBallOutcomeProcessor } from "../helper/BallOutcomeProcessorInterface";
+import { IShowInningSummary } from "../helper/ShowInningSummaryInterface";
+import { ITeam } from "../helper/TeamInterface";
+import { Inning } from "../src/Inning";
+import { Match } from "../src/Match"
+import { createMockBallOutcomeProcessor, createMockShowInningSummary, createMockTeam } from "./mocks/mockObjects";
 
 describe("Testing Match class", () => {
-    test("Match class should takes two teams as arguments", () => {
-        const team1 = new Team("RCB");
-        const team2 = new Team("CSK")
-        const match = new Match(team1, team2);
+    let match : Match;
+    let mockBattingTeam : jest.Mocked<ITeam>;
+    let mockBowlingTeam : jest.Mocked<ITeam>;
+    let mockShowInningSummary: jest.Mocked<IShowInningSummary>;
+    let mockBallOutcomeProcessor: jest.Mocked<IBallOutcomeProcessor>;
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+
+        mockBattingTeam = createMockTeam();
+        mockBowlingTeam = createMockTeam();
+        mockShowInningSummary = createMockShowInningSummary();
+        mockBallOutcomeProcessor = createMockBallOutcomeProcessor();
+
+        mockBattingTeam.getName.mockReturnValue("RCB");
+        mockBowlingTeam.getName.mockReturnValue("CSK");
+
+        match = new Match(mockBattingTeam, mockBowlingTeam, mockShowInningSummary, mockBallOutcomeProcessor);
     })
+
+    test("should throw error if playInnings() method called before toss()", () => {
+        expect(() => match.playInnings()).toThrow("toss of match has not been conducted. Call toss() before playInnings().")
+    })
+
+    test("should call displayMatchSummary twice for both innings", () => {
+        match.toss();
+        match.playInnings();
+        expect(mockShowInningSummary.displayMatchSummary).toHaveBeenCalledTimes(2);
+    })
+
+    test("should set tossWinner flag for tossWinnerteam", () => {
+        match.toss();
+        match.playInnings();
+        expect(mockBattingTeam.setTossWinner).toHaveBeenCalledTimes(1);
+    })  
+
+    test("should create and play two innings", () => {
+        jest.spyOn(Inning.prototype, "play"); 
     
-    // test("tesing startMatch method", () => {
-    //     const teams = createTeams(["RCB", "CSK"]);
-    //     const match = new Match(teams[0], teams[1]);
-    //     match.play();
-    //     console.log(teams[0]);
-    //     expect(teams[0].getRuns()).toBeGreaterThanOrEqual(1);
-    // })
+        match.toss();
+        match.playInnings();
+    
+        expect(Inning.prototype.play).toHaveBeenCalledTimes(2); 
+    });
+    
 })
