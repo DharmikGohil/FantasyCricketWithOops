@@ -2,12 +2,12 @@ import { IBallOutcomeProcessor } from "../helper/BallOutcomeProcessorInterface";
 import { IPlayer } from "../helper/PlayerInterface";
 import { IScoreManager } from "../helper/ScoreManagerInterface";
 import { ITeam } from "../helper/TeamInterface";
-import { ScoreManager } from "./ScoreManager";
+
 
 export class BallOutcomeProcessor implements IBallOutcomeProcessor{
     private scoreManager: IScoreManager;
-    constructor(){
-        this.scoreManager = new ScoreManager();
+    constructor(scoreManager : IScoreManager){
+        this.scoreManager = scoreManager;
     }
     processDotBall(bowler : IPlayer, bowlingTeam : ITeam, fantasyPoints : number): void {
         this.scoreManager.addBowlerFantasyPoints(fantasyPoints, bowler, bowlingTeam);
@@ -20,7 +20,7 @@ export class BallOutcomeProcessor implements IBallOutcomeProcessor{
         batsman.setIsPlayed();
         batsman.setOutBy(bowler.getName());
     
-        this.scoreManager.handleDuckPenalty(batsman);
+        this.scoreManager.handleDuckPenalty(batsman, battingTeam);
         this.scoreManager.addBowlerFantasyPoints(fantasyPoints, bowler, bowlingTeam);
         
     }

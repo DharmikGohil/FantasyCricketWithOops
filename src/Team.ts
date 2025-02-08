@@ -94,7 +94,7 @@ export class Team implements ITeam {
     }
     
     private validatePlayer(player: IPlayer) {
-        if(this.players.includes(player)) {
+        if(this.players.find(p => p.getName() === player.getName())) {
             throw new Error('Player already added');
         }
         if (this.players.length >= TEAM_RULES.MAX_PLAYERS) {

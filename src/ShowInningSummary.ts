@@ -1,7 +1,8 @@
 import { IPlayer } from "../helper/PlayerInterface";
+import { IShowInningSummary } from "../helper/ShowInningSummaryInterface";
 import { ITeam } from "../helper/TeamInterface";
 
-export class ShowInningSummary {
+export class ShowInningSummary implements IShowInningSummary{
     public displayMatchSummary(battingTeam: ITeam, bowlingTeam: ITeam): void {
         this.displayTeamSummary(battingTeam, "Batting");
         console.log("\n");

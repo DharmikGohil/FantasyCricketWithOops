@@ -10,13 +10,15 @@ const shotScoringRule = [
    
   
 export class Shot{
+    private index : number;
+    constructor() {
+        this.index = this.generateRandomIndex()
+    }
     getRuns(){
-        const index = this.generateRandomIndex();
-        return shotScoringRule[index].run;
+        return shotScoringRule[this.index].run;
     }
     getFantasyPoints(){
-        const index = this.generateRandomIndex();
-        return shotScoringRule[index].fantPoints;
+        return shotScoringRule[this.index].fantPoints;
     }
     private generateRandomIndex(){
         return Math.floor(Math.random() * shotScoringRule.length);

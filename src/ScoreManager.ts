@@ -6,8 +6,8 @@ import { PointsCalculator } from "./PointsCalculator";
 export class ScoreManager implements IScoreManager{
     private pointsCalculator: PointsCalculator;
 
-    constructor(){
-        this.pointsCalculator = new PointsCalculator();
+    constructor(pointsCalculator : PointsCalculator){
+        this.pointsCalculator = pointsCalculator;
     }
     addRuns(runs: number, batsman: IPlayer, battingTeam : ITeam): void {
         batsman.addRuns(runs);
@@ -26,8 +26,9 @@ export class ScoreManager implements IScoreManager{
         bowlingTeam.addFantasyPoints(bowlerFantasyPoints);
     }
 
-    handleDuckPenalty(batman: IPlayer): void {
+    handleDuckPenalty(batman: IPlayer, battingTeam : ITeam): void {
         let paneltyPoints = this.pointsCalculator.calculateDuckPaneltyPoints(batman);
         batman.addFantasyPoints(-paneltyPoints);
+        battingTeam.addFantasyPoints(-paneltyPoints);
     }
 }
