@@ -8,7 +8,7 @@ describe('Test for PointsCalculator class', () => {
   let viceCaptainPlayer: IPlayer;
   let normalPlayer: IPlayer;
   beforeAll(() => {
-    pointsCalculator = new PointsCalculator();
+    pointsCalculator = new PointsCalculator(2, 1.5);
     captainPlayer = new Player('Virat Kohli', 'Batsman', 10, true, false, 0, 100, true, 30, '', 0 );
     viceCaptainPlayer = new Player('Jasprit Bumrah','Bowler',10, false, true, 0, 100, true, 30, '', 0 );
     normalPlayer = new Player( 'Abhishek Sharma', 'Batsman', 10, false, false, 0, 100, true, 30, '', 0 );

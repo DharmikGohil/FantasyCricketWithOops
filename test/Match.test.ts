@@ -24,7 +24,7 @@ describe("Testing Match class", () => {
         mockBowlingTeam.getName.mockReturnValue("CSK");
 
         match = new Match(mockBattingTeam, mockBowlingTeam, mockShowInningSummary, mockBallOutcomeProcessor);
-    })
+    }) 
 
     test("should throw error if playInnings() method called before toss()", () => {
         expect(() => match.playInnings()).toThrow("toss of match has not been conducted. Call toss() before playInnings().")

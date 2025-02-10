@@ -44,4 +44,7 @@ export class Inning{
             }
         }
     }
+    showInningSummary(){
+        
+    }
 }

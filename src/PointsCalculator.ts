@@ -2,9 +2,12 @@ import { IPlayer } from "../helper/PlayerInterface";
 import { IPointsCalculator } from "../helper/PointsCalculatorInterface";
 
 export class PointsCalculator implements IPointsCalculator{
+    constructor(private captainMultiplier: number, private viceCaptainMultiplier: number){
+
+    }
      calculatePoints(player : IPlayer, basepoints : number) : number{
-        if(player.getIsCaptain()) return basepoints * 2;
-        if(player.getIsViceCaptain()) return basepoints * 1.5;
+        if(player.getIsCaptain()) return basepoints * this.captainMultiplier;
+        if(player.getIsViceCaptain()) return basepoints * this.viceCaptainMultiplier;
         return basepoints;
     }
 

@@ -1,12 +1,12 @@
 import { IPlayer } from "../helper/PlayerInterface";
+import { IPointsCalculator } from "../helper/PointsCalculatorInterface";
 import { IScoreManager } from "../helper/ScoreManagerInterface";
 import { ITeam } from "../helper/TeamInterface";
-import { PointsCalculator } from "./PointsCalculator";
 
 export class ScoreManager implements IScoreManager{
-    private pointsCalculator: PointsCalculator;
+    private pointsCalculator: IPointsCalculator;
 
-    constructor(pointsCalculator : PointsCalculator){
+    constructor(pointsCalculator : IPointsCalculator){
         this.pointsCalculator = pointsCalculator;
     }
     addRuns(runs: number, batsman: IPlayer, battingTeam : ITeam): void {

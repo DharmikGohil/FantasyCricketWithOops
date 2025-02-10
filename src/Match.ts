@@ -36,5 +36,8 @@ export class Match{
         console.log("--------------SECOND INNING SUMMARY----------------")
         this.inningSummary.displayMatchSummary(bowlingTeam, battingTeam);
     }
+    showInningsSummary() : void{
+        
+    }
 
 }

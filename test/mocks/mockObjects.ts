@@ -1,9 +1,9 @@
 import { IBallOutcomeProcessor } from '../../helper/BallOutcomeProcessorInterface';
 import { IPlayer } from '../../helper/PlayerInterface';
+import { IPointsCalculator } from '../../helper/PointsCalculatorInterface';
 import { IScoreManager } from '../../helper/ScoreManagerInterface';
 import { IShowInningSummary } from '../../helper/ShowInningSummaryInterface';
 import { ITeam } from '../../helper/TeamInterface';
-import { PointsCalculator } from '../../src/PointsCalculator';
 
 // Create a full mock of IPlayer but override only required methods
 export const createMockPlayer = (): jest.Mocked<IPlayer> => {
@@ -54,7 +54,7 @@ export const createMockTeam = (): jest.Mocked<ITeam> => {
 };
 
 // Create a mock of PointsCalculator
-export const createMockPointsCalculator = (): jest.Mocked<PointsCalculator> => {
+export const createMockPointsCalculator = (): jest.Mocked<IPointsCalculator> => {
   return {
     calculatePoints: jest.fn(),
     calculateDuckPaneltyPoints: jest.fn(),
