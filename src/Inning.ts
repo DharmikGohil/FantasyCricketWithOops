@@ -3,11 +3,10 @@ import { ITeam } from "../helper/TeamInterface";
 import { Shot } from "./Shot";
 
 export class Inning{
-    private readonly TOTAL_OVER_BALLS = 30;
-    private ballOutcomeProcessor : IBallOutcomeProcessor;
+    private TOTAL_OVER_BALLS : number;
 
-    constructor(private battingTeam: ITeam, private bowlingTeam: ITeam, ballOutcomeProcessor : IBallOutcomeProcessor) {
-        this.ballOutcomeProcessor = ballOutcomeProcessor;
+    constructor(private battingTeam: ITeam, private bowlingTeam: ITeam, private overs: number, private ballOutcomeProcessor : IBallOutcomeProcessor) {
+        this.TOTAL_OVER_BALLS = overs * 6;
     }
     getBattingTeam(){
         return this.battingTeam;
@@ -43,8 +42,5 @@ export class Inning{
                 bowler = this.bowlingTeam.getNextBowler();
             }
         }
-    }
-    showInningSummary(){
-        
     }
 }

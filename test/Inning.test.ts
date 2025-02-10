@@ -24,7 +24,7 @@ describe("Inning", () => {
         mockBattingTeam.getNextBatsman.mockReturnValue(mockBatsman);
         mockBowlingTeam.getNextBowler.mockReturnValue(mockBowler);
 
-        inning = new Inning(mockBattingTeam, mockBowlingTeam, mockBallOutcomeProcessor);
+        inning = new Inning(mockBattingTeam, mockBowlingTeam, 5, mockBallOutcomeProcessor);
     });
 
     test("should process dot ball correctly", () => {

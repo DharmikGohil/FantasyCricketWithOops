@@ -26,18 +26,14 @@ export class Match{
         const bowlingTeam = this.tossWinner === this.team1.getName() ? this.team2 : this.team1;
 
         battingTeam.setTossWinner();
-        const inning1 = new Inning(battingTeam, bowlingTeam, this.ballOutcomeProcessor);
+        const inning1 = new Inning(battingTeam, bowlingTeam, 5, this.ballOutcomeProcessor);
         inning1.play();
         console.log("---------------FIRST INNING SUMMARY------------------")
         this.inningSummary.displayMatchSummary(battingTeam, bowlingTeam)
 
-        const inning2 = new Inning(bowlingTeam, battingTeam, this.ballOutcomeProcessor);
+        const inning2 = new Inning(bowlingTeam, battingTeam, 5, this.ballOutcomeProcessor);
         inning2.play();
         console.log("--------------SECOND INNING SUMMARY----------------")
         this.inningSummary.displayMatchSummary(bowlingTeam, battingTeam);
     }
-    showInningsSummary() : void{
-        
-    }
-
 }
