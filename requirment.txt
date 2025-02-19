@@ -1,0 +1,76 @@
+Creating Your Team.
+Each team must have 11 players.
+Each team has to be within the 100 credit cap.
+Each team must have 5 batsmen, 5 bowlers and 1 wicket keeper.
+Each team must have a captain and a vice-captain.
+
+Shot Types.
+
+Single Run
+1
+Double Run
+2
+Three Runs
+3
+Boundary
+4
+Six
+6
+Dot Ball
+.
+Wicket
+w
+
+
+
+Fantasy Points System.
+
+Batting Points
+
+
+Run
+1
+Four/Boundary 
+5
+Six
+8
+Dismissal for a duck
+-2
+Bowling Points
+
+
+Wicket
+10
+Dot Ball
+1
+
+
+The captain will give you 2x points.
+The vice-captain will give you 1.5x points.
+
+
+
+Requirements
+The game is played between two players.
+As a Player 1, I shall be able to enter my team name.
+As a Player 2, I shall be able to enter my team name.
+I shall be able to toss a coin.
+The system shall randomly select any one team from above and display it on the screen. (eg. “Chennai Super Kings has won the toss.”)
+As a Player, I shall be able to create my team. (The player that won the toss gets the first chance to build the team. The system shall allow the winning player to creating)
+The system shall apply above rules while creating the team.
+As a player, I can choose captain and vice-captain for my team.
+As a player, I can start a match by clicking the “START MATCH” button once both the teams are built. (The system shall display the name of the first player from the winning toss team on the screen as a batsman and a player name with a player type as “BOWLER” from the other team as a bowler.)
+The match starts with 0 fantasy points for both the teams.
+Each team gets 5 overs to play with 6 balls in an over.
+After each over, the system shall pick another player from the bowling team with a player type as “BOWLER” who has not bowled yet.
+As a player, I can play shots by clicking the “HIT” button.
+There shall be a 5 seconds delay between two consecutive bowls.
+The system shall perform following actions on each shot/ball.
+The system shall randomly pick a shot type and record it with each ball.
+The system shall update and record the fantasy points as per the above fantasy points rules.
+The system shall update the scoreboard.
+The system shall display the shot type along with the date & time after each ball. (eg. “Ball 1 - 15/07/2022 04:30:35 - 2, Ball 2 - 15/07/2022 04:30:40 - w….”)
+When the shot type picked is “w”, the system shall pick the next batsman from the batting team and display it on the screen.
+After 5 overs are completed, the batting team now bowls and vice versa.
+The scoreboard and fantasy points for both the teams can be viewed at any point in time.
+The system shall display the winner when the match is finished. The team with more fantasy points wins the game. 

@@ -52,3 +52,4 @@ describe("Inning", () => {
         expect(mockBowlingTeam.getNextBowler).toHaveBeenCalledTimes(5); 
     });
 });
+

@@ -26,12 +26,12 @@ describe("Basic team operations", () => {
     let team : Team;
     beforeEach(() => {
         team = new Team("RCB");
-        team.addPlayer(createBatsman("Virat Kohli", 10));
-        team.addPlayer(createBowler("Jasprit Bumrah", 12));
         team.addPlayer(createBatsman("Rohit Sharma", 11));;
+        team.addPlayer(createBowler("Jasprit Bumrah", 12));
         team.addPlayer(createWicketkeeper("Dinesh Karthik", 10));  
     })
     test("team name should be defined", () => {
+        team.addPlayer(createBatsman("Virat Kohli", 10));
         expect(team.getName()).toBeDefined();
     })
 
